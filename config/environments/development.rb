@@ -41,6 +41,26 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
+  config.action_mailer.raise_delivery_errors = true
+  #config.action_mailer.delivery_method = :test
+  config.action_mailer.perform_deliveries = true
+  host = 'localhost:3000'
+   # Don't use this literally; use your local dev host instead
+  # Use this on the cloud IDE.
+  config.action_mailer.default_url_options = { :host => 'localhost:3000'}
+  # Use this if developing on localhost.
+   config.action_mailer.delivery_method = :smtp
+   config.action_mailer.smtp_settings = {
+   :address              => "smtp.gmail.com",
+   :port                 => 587,
+   :user_name            => 'narola.ror@gmail.com',
+   :password             => 'password123#',
+   :authentication       => "plain",
+   :enable_starttls_auto => true
+  }
+
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
