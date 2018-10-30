@@ -5,11 +5,12 @@ class UsersController < ApplicationController
 
 
   def index
-   @users = User.where(activated: FILL_IN).paginate(page: params[:page])
+   @microposts = @user.microposts.paginate(page: params[:page])
  end
 
  def show
   @user = User.find(params[:id])
+  @microposts = @user.microposts.paginate(page: params[:page])
 #  redirect_to root_url and return unless FILL_IN
 end
 
@@ -53,29 +54,20 @@ end
 
   private
 
-  def user_params
-    params.require(:user).permit(:name, :email, :password,
-      :password_confirmation)
+    def user_params
+      params.require(:user).permit(:name, :email, :password,:password_confirmation)
     end
 
-    # Confirms a logged-in user.
-    def logged_in_user
-      unless logged_in?
-        store_location
-        flash[:danger] = "Please log in."
-        redirect_to login_url
-      end
-    end
-
-    # Confirms an admin user.
-    def admin_user
-      redirect_to(root_url) unless current_user.admin?
-    end
-
+    # Before filters
 
     # Confirms the correct user.
     def correct_user
       @user = User.find(params[:id])
       redirect_to(root_url) unless current_user?(@user)
     end
-  end
+
+    # Confirms an admin user.
+    def admin_user
+      redirect_to(root_url) unless current_user.admin?
+    end
+end
